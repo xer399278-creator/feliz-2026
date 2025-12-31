@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz 2026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(to bottom, #6ecbff, #0b0b1a);
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    font-family: 'Pacifico', cursive;
+}
+
+.center {
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    transform: translateY(-50%);
+}
+
+h1 { font-size: 3.5em; opacity: 0; }
+
+#final {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    opacity: 0;
+}
+
+#texto {
+    position: absolute;
+    bottom: 40px;
+    width: 90%;
+    left: 5%;
+    font-family: Arial, sans-serif;
+    font-size: 1.1em;
+    line-height: 1.6;
+    opacity: 0;
+    white-space: pre-wrap;
+}
+
+.fade-in { animation: fadeIn 2s forwards; }
+.fade-out { animation: fadeOut 2s forwards; }
+
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes fadeOut { from{opacity:1;} to{opacity:0;} }
+
+/* Fuegos */
+.rocket {
+    position: absolute;
+    width: 4px;
+    height: 14px;
+    background: white;
+    bottom: 0;
+    animation: subir 0.9s linear forwards;
+}
+
+@keyframes subir {
+    to { transform: translate(var(--dx), -95vh); }
+}
+
+.spark {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(255,255,255,.8);
+    animation: explotar 1.2s ease-out forwards;
+}
+
+@keyframes explotar {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="center">
+    <h1 id="feliz">Feliz Año Nuevo</h1>
+    <h1 id="anio">2026</h1>
+</div>
+
+<div id="final">
+    <h1>Feliz Año Nuevo</h1>
+    <h2>2026</h2>
+</div>
+
+<div id="texto"></div>
+
+<script>
+const feliz = document.getElementById("feliz");
+const anio = document.getElementById("anio");
+const final = document.getElementById("final");
+const texto = document.getElementById("texto");
+
+const mensaje = `Gracias por acompañarme este año. Tal vez no hablamos mucho, pero tu compañía me gustó más de lo que creés.
+
+Me hizo bien tenerte cerca, aunque sea en pequeños momentos o charlas simples.
+
+Ojalá el próximo año podamos seguir compartiendo momentos, con más tiempo, más charlas y más tranquilidad.
+
+Gracias por todo, Arbolito/Morales 💫
+Auuu.. El lobo solitario ahre 😎🐺`;
+
+setTimeout(() => feliz.classList.add("fade-in"), 1000);
+setTimeout(() => feliz.classList.add("fade-out"), 5000);
+setTimeout(() => anio.classList.add("fade-in"), 7000);
+setTimeout(() => anio.classList.add("fade-out"), 12000);
+setTimeout(() => final.style.opacity = 1, 15000);
+
+let i = 0;
+setTimeout(() => {
+    texto.style.opacity = 1;
+    const t = setInterval(() => {
+        texto.textContent += mensaje[i];
+        i++;
+        if (i >= mensaje.length) clearInterval(t);
+    }, 40);
+}, 17000);
+
+function lanzarFuego(){
+    const r = document.createElement("div");
+    r.className = "rocket";
+    r.style.left = Math.random()*100 + "vw";
+    r.style.setProperty("--dx", `${Math.random()*300-150}px`);
+    document.body.appendChild(r);
+
+    setTimeout(() => {
+        explotar(r.offsetLeft, r.offsetTop);
+        r.remove();
+    }, 900);
+}
+
+function explotar(x, y){
+    const colores = ["#ff3c3c","#ffd93c","#3cffb4","#6aa6ff","#ff7bf5"];
+    for(let i=0;i<25;i++){
+        const s = document.createElement("div");
+        s.className = "spark";
+        s.style.background = colores[Math.floor(Math.random()*colores.length)];
+        s.style.left = x+"px";
+        s.style.top = y+"px";
+        s.style.setProperty("--x", `${Math.random()*250-125}px`);
+        s.style.setProperty("--y", `${Math.random()*250-125}px`);
+        document.body.appendChild(s);
+        setTimeout(()=>s.remove(),1200);
+    }
+}
+
+setInterval(()=>{
+    for(let i=0;i<5;i++) lanzarFuego();
+}, 700);
+</script>
+
+</body>
+</html>
